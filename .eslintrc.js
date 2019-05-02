@@ -23,8 +23,12 @@ module.exports = {
     "react"
   ],
   "rules": {
-    "indent": ["error", 2],
+    'indent': [2, 2, { 'SwitchCase': 1 }],
     "semi": [2, "always"],
+    'semi-spacing': [2, {
+      'before': false,
+      'after': true
+    }],
     'no-console': process.env.NODE_ENV === 'production' ? 2 : 0,
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
     "object-curly-spacing": ["error", "always", { "objectsInObjects": false }],
