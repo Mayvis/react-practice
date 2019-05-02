@@ -6,24 +6,30 @@ class App extends Component {
   // state can only be accessed in class-based component
   state = {
     persons: [
-      { id: 1, name: 'LiangYu', age: 20 },
-      { id: 2, name: 'Cari', age: 21 },
-      { id: 3, name: 'Yu', age: 22 }
+      { id: 'liangyu', name: 'LiangYu', age: 20 },
+      { id: 'cari', name: 'Cari', age: 21 },
+      { id: 'yu', name: 'Yu', age: 22 }
     ],
     otherState: 'Hello, beautiful LiangYu',
     showPersons: false
   };
 
-  nameChangedHandler = (event) => {
+  nameChangedHandler = (event, id) => {
     console.log('nameChanged');
 
-    this.setState({
-      persons: [
-        { name: 'LiangYu', age: 20 },
-        { name: event.target.value, age: 21 },
-        { name: 'Yu', age: 22 }
-      ]
+    const personIndex = this.state.persons.findIndex(p => {
+      return p.id === id;
     });
+
+    // const person = Object.assign({}, this.state.persons[personIndex]); as the same to using spread operator
+
+    const person = { ...this.state.persons[personIndex] }; // using spread operator to clone the object inside the person
+    person.name = event.target.value; // change the name to what you type
+
+    const persons = [...this.state.persons]; // clone the persons array
+    persons[personIndex] = person; // assign the specific index array object to the new object
+
+    this.setState({ persons: persons }); // set the new persons
   };
 
   deletePersonHandler = (personIndex) => {
@@ -60,6 +66,7 @@ class App extends Component {
                 name={person.name}
                 age={person.age}
                 key={person.id}
+                changed={(event) => this.nameChangedHandler(event, person.id)}
               />);
           })}
         </div>
