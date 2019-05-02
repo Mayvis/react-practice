@@ -6,26 +6,12 @@ class App extends Component {
   // state can only be accessed in class-based component
   state = {
     persons: [
-      { name: 'LiangYu', age: 20 },
-      { name: 'Cari', age: 21 },
-      { name: 'Yu', age: 22 }
+      { id: 1, name: 'LiangYu', age: 20 },
+      { id: 2, name: 'Cari', age: 21 },
+      { id: 3, name: 'Yu', age: 22 }
     ],
     otherState: 'Hello, beautiful LiangYu',
     showPersons: false
-  };
-
-  // method to handle onClick event
-  // Don't do this.state.persons[0].name = 'LiangYu'
-  switchNameHandler = (newName) => {
-    console.log('switchName');
-
-    this.setState({
-      persons: [
-        { name: newName, age: 20 },
-        { name: 'Cari', age: 21 },
-        { name: 'Yu', age: 22 }
-      ]
-    });
   };
 
   nameChangedHandler = (event) => {
@@ -38,6 +24,14 @@ class App extends Component {
         { name: 'Yu', age: 22 }
       ]
     });
+  };
+
+  deletePersonHandler = (personIndex) => {
+    // const persons = this.state.persons;
+    // Using the spread operator is better then using the original data, because it just clone the state
+    const persons = [...this.state.persons];
+    persons.splice(personIndex, 1);
+    this.setState({ persons: persons });
   };
 
   togglePersonsHandler = () => {
@@ -59,18 +53,15 @@ class App extends Component {
     if (this.state.showPersons) {
       persons = (
         <div>
-          <Person
-            name={this.state.persons[0].name}
-            age={this.state.persons[0].age}/>
-          <Person
-            name={this.state.persons[1].name}
-            age={this.state.persons[1].age}
-            click={this.switchNameHandler.bind(this, 'Yu')}
-            changed={this.nameChangedHandler}
-          >My Hobbies: Racing</Person>
-          <Person
-            name={this.state.persons[2].name}
-            age={this.state.persons[2].age}/>
+          {this.state.persons.map((person, index) => {
+            return (
+              <Person
+                click={() => this.deletePersonHandler(index)}
+                name={person.name}
+                age={person.age}
+                key={person.id}
+              />);
+          })}
         </div>
       );
     }
@@ -79,10 +70,6 @@ class App extends Component {
       <div className="App">
         <h1>Hi, I'm a React App</h1>
         <p>This is really working</p>
-        <button
-          style={style}
-          onClick={() => this.switchNameHandler('Liang')}
-        >Switch Name</button>
         <button
           style={style}
           onClick={this.togglePersonsHandler}
