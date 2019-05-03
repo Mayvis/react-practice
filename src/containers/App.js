@@ -4,6 +4,11 @@ import Cockpit from '../components/Cockpit/Cockpit';
 import myClasses from './App.module.css';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    console.log('[App.js] constructor');
+  }
+
   // state can only be accessed in class-based component
   state = {
     persons: [
@@ -14,6 +19,16 @@ class App extends Component {
     otherState: 'Hello, beautiful LiangYu',
     showPersons: false
   };
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    console.log('[App.js] getDerivedStateFromProps', nextProps);
+
+    return prevState;
+  }
+
+  componentDidMount() {
+    console.log('[App.js] componentDidMount');
+  }
 
   nameChangedHandler = (event, id) => {
     console.log('nameChanged');
@@ -47,6 +62,8 @@ class App extends Component {
   };
 
   render() {
+    console.log('[App.js] render');
+
     let persons = null;
 
     if (this.state.showPersons) {
@@ -62,6 +79,7 @@ class App extends Component {
     return (
       <div className={myClasses.App}>
         <Cockpit
+          title={this.props.appTitle}
           showPersons={this.state.showPersons}
           persons={this.state.persons}
           clicked={this.togglePersonsHandler}
