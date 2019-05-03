@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Person from './Person/Person';
 import myClasses from './App.module.css';
+import ErrorBoundary from './ErrorBoundary/ErrorBoundary';
 
 class App extends Component {
   // state can only be accessed in class-based component
@@ -54,13 +55,14 @@ class App extends Component {
         <div>
           {this.state.persons.map((person, index) => {
             return (
-              <Person
-                click={() => this.deletePersonHandler(index)}
-                name={person.name}
-                age={person.age}
-                key={person.id}
-                changed={(event) => this.nameChangedHandler(event, person.id)}
-              />);
+              <ErrorBoundary key={person.id}>
+                <Person
+                  click={() => this.deletePersonHandler(index)}
+                  name={person.name}
+                  age={person.age}
+                  changed={(event) => this.nameChangedHandler(event, person.id)}/>
+              </ErrorBoundary>
+            );
           })}
         </div>
       );
