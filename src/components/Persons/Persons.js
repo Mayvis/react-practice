@@ -13,13 +13,17 @@ class Persons extends Component {
   }
 
   getSnapshotBeforeUpdate(prevProps, prevState) {
-    console.log('[Person.js] getSnapshotBeforeBeforeUpdate', prevProps, prevState);
+    console.log('[Persons.js] getSnapshotBeforeBeforeUpdate', prevProps, prevState);
     return { message: 'Snapshot' };
   }
 
   componentDidUpdate(prevProps, prevState, snapShot) {
-    console.log('[Person.js] componentDidUpdate', prevProps, prevState);
+    console.log('[Persons.js] componentDidUpdate', prevProps, prevState);
     console.log(snapShot);
+  }
+
+  componentWillUnmount() {
+    console.log('[Persons.js] componentWillUnmount');
   }
 
   render() {
