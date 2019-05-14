@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, {PureComponent} from 'react';
 import Person from "./Person/Person";
 
 class Persons extends PureComponent {
@@ -17,7 +17,7 @@ class Persons extends PureComponent {
 
   getSnapshotBeforeUpdate(prevProps, prevState) {
     console.log('[Persons.js] getSnapshotBeforeBeforeUpdate', prevProps, prevState);
-    return { message: 'Snapshot' };
+    return {message: 'Snapshot'};
   }
 
   componentDidUpdate(prevProps, prevState, snapShot) {

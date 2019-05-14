@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/Cockpit/Cockpit';
 import myClasses from './App.module.css';
-// import withClass from '../hoc/withClass';
 import Aux from '../hoc/Auxiliary';
+import AuthContext from '../context/auth-context';
 
 class App extends Component {
   constructor(props) {
@@ -14,14 +14,15 @@ class App extends Component {
   // state can only be accessed in class-based component
   state = {
     persons: [
-      {id: 'liangyu', name: 'LiangYu', age: 20},
-      {id: 'cari', name: 'Cari', age: 21},
-      {id: 'yu', name: 'Yu', age: 22}
+      { id: 'liangyu', name: 'LiangYu', age: 20 },
+      { id: 'cari', name: 'Cari', age: 21 },
+      { id: 'yu', name: 'Yu', age: 22 }
     ],
     otherState: 'Hello, beautiful LiangYu',
     showPersons: false,
     showCockpit: true,
-    changeCounter: 0
+    changeCounter: 0,
+    authenticated: false
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -52,7 +53,7 @@ class App extends Component {
 
     // const person = Object.assign({}, this.state.persons[personIndex]); as the same to using spread operator
 
-    const person = {...this.state.persons[personIndex]}; // using spread operator to clone the object inside the person
+    const person = { ...this.state.persons[personIndex] }; // using spread operator to clone the object inside the person
     person.name = event.target.value; // change the name to what you type
 
     const persons = [...this.state.persons]; // clone the persons array
@@ -71,12 +72,16 @@ class App extends Component {
     // Using the spread operator is better then using the original data, because it just clone the state
     const persons = [...this.state.persons];
     persons.splice(personIndex, 1);
-    this.setState({persons: persons});
+    this.setState({ persons: persons });
   };
 
   togglePersonsHandler = () => {
     const doesShow = this.state.showPersons;
-    this.setState({showPersons: !doesShow});
+    this.setState({ showPersons: !doesShow });
+  };
+
+  loginHandler = () => {
+    this.setState({ authenticated: true });
   };
 
   render() {
@@ -98,21 +103,26 @@ class App extends Component {
       <Aux classes={myClasses.App}>
         <button
           onClick={() => {
-            this.setState({showCockpit: false});
+            this.setState({ showCockpit: false });
           }}
         >
           Remove Cockpit
         </button>
-        {this.state.showCockpit ? (
-          <Cockpit
-            title={this.props.appTitle}
-            showPersons={this.state.showPersons}
-            personsLength={this.state.persons.length}
-            clicked={this.togglePersonsHandler}
-          />
-        ) : null
-        }
-        {persons}
+        <AuthContext.Provider value={{
+          authenticated: this.state.authenticated,
+          login: this.loginHandler
+        }}>
+          {this.state.showCockpit ? (
+            <Cockpit
+              title={this.props.appTitle}
+              showPersons={this.state.showPersons}
+              personsLength={this.state.persons.length}
+              clicked={this.togglePersonsHandler}
+            />
+          ) : null
+          }
+          {persons}
+        </AuthContext.Provider>
       </Aux>
     );
     // return React.createElement('div', {className: 'App'}, React.createElement('h1', null, 'Hi I\'m a React app'))
