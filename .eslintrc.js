@@ -34,6 +34,7 @@ module.exports = {
     "object-curly-spacing": ["error", "always", { "objectsInObjects": false }],
     "react/no-unescaped-entities": 0,
     "react/prop-types": 0,
-    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }]
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "react/display-name": 0,
   }
 };

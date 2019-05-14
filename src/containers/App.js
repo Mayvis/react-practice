@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/Cockpit/Cockpit';
 import myClasses from './App.module.css';
-import withClass from '../hoc/withClass';
+// import withClass from '../hoc/withClass';
 import Aux from '../hoc/Auxiliary';
 
 class App extends Component {
@@ -14,13 +14,14 @@ class App extends Component {
   // state can only be accessed in class-based component
   state = {
     persons: [
-      { id: 'liangyu', name: 'LiangYu', age: 20 },
-      { id: 'cari', name: 'Cari', age: 21 },
-      { id: 'yu', name: 'Yu', age: 22 }
+      {id: 'liangyu', name: 'LiangYu', age: 20},
+      {id: 'cari', name: 'Cari', age: 21},
+      {id: 'yu', name: 'Yu', age: 22}
     ],
     otherState: 'Hello, beautiful LiangYu',
     showPersons: false,
-    showCockpit: true
+    showCockpit: true,
+    changeCounter: 0
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -51,13 +52,18 @@ class App extends Component {
 
     // const person = Object.assign({}, this.state.persons[personIndex]); as the same to using spread operator
 
-    const person = { ...this.state.persons[personIndex] }; // using spread operator to clone the object inside the person
+    const person = {...this.state.persons[personIndex]}; // using spread operator to clone the object inside the person
     person.name = event.target.value; // change the name to what you type
 
     const persons = [...this.state.persons]; // clone the persons array
     persons[personIndex] = person; // assign the specific index array object to the new object
 
-    this.setState({ persons: persons }); // set the new persons
+    this.setState((prevState, props) => {
+      return {
+        persons,
+        changeCounter: prevState.changeCounter + 1
+      };
+    }); // set the new persons
   };
 
   deletePersonHandler = (personIndex) => {
@@ -65,12 +71,12 @@ class App extends Component {
     // Using the spread operator is better then using the original data, because it just clone the state
     const persons = [...this.state.persons];
     persons.splice(personIndex, 1);
-    this.setState({ persons: persons });
+    this.setState({persons: persons});
   };
 
   togglePersonsHandler = () => {
     const doesShow = this.state.showPersons;
-    this.setState({ showPersons: !doesShow });
+    this.setState({showPersons: !doesShow});
   };
 
   render() {
@@ -89,10 +95,10 @@ class App extends Component {
     }
 
     return (
-      <Aux>
+      <Aux classes={myClasses.App}>
         <button
           onClick={() => {
-            this.setState({ showCockpit: false });
+            this.setState({showCockpit: false});
           }}
         >
           Remove Cockpit
@@ -113,4 +119,4 @@ class App extends Component {
   }
 }
 
-export default withClass(App, myClasses.App);
+export default App;
