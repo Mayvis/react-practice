@@ -1,16 +1,19 @@
-import React, { useEffect } from 'react';
+import React, {useEffect, useRef} from 'react';
 import myClasses from './Cockpit.module.css';
 
 const Cockpit = (props) => {
+  const toggleBtnRef = useRef(null);
+
   useEffect(() => {
     console.log('[Cockpit.js] useEffect');
     // HTTP request ...
-    const timer = setTimeout(() => {
-      // alert('Saved data to the cloud!!');
-    }, 1000);
+    // const timer = setTimeout(() => {
+    // alert('Saved data to the cloud!!');
+    // }, 1000);
+    toggleBtnRef.current.click();
     return () => {
       // clearTimeout(timer); // can cleanup timer
-      console.log('[Cockpit.js]', timer);
+      // console.log('[Cockpit.js]', timer);
       console.log('[Cockpit.js] cleanup work in useEffect'); // cleanup work using useEffect
     };
   }, []); // when props changed this will trigger, otherwise, it will not changed
@@ -42,9 +45,11 @@ const Cockpit = (props) => {
       <h1>{props.title}</h1>
       <p className={classes.join(' ')}>This is really working</p>
       <button
+        ref={toggleBtnRef}
         className={btnClass}
         onClick={props.clicked}
-      >Toggle Persons</button>
+      >Toggle Persons
+      </button>
     </div>
   );
 };
